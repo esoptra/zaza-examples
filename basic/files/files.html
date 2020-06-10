@@ -1,0 +1,72 @@
+<script src="https://zaza.rocks/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+  // Helper to log to the screen
+  let logger = document.getElementById("logger");
+  let console = {};
+  console.log = text => {
+    let element = document.createElement("div");
+    let txt = document.createTextNode(text);
+    element.appendChild(txt);
+    logger.appendChild(element);
+  }
+
+  // Example of listing files in a bag 
+  exampleFiles = async () => {
+    // Create a bag
+    let view = await Zaza.createBag()
+    console.log(`Created bag ${view.qid}`)
+
+    // Print the bag content
+    await exampleList(view)
+
+    // Create a demo file
+    let demoData = { foo: 'bar' }
+    let demoFile = new File([JSON.stringify(demoData)], "data.json");
+
+    // Upload the file
+    let uploaded = await view.upload(demoFile)
+
+    // Print the bag content
+    await exampleList(view)
+
+    // Download the file
+    // let stream = await view.download("data.json")
+    // let data = new Response(stream).body
+    // console.log(`Data: ${data}`);
+
+    // Download JSON file as object
+    let object = await view.downloadJSON("data.json")
+    console.log(`File downloaded`);
+    console.log(`foo = ${object.foo}`);
+
+    // Delete the file
+    await view.delete(uploaded)
+    console.log('File removed')
+
+    // Print the bag content
+    await exampleList(view)
+
+    // Delete the bag
+    await view.deleteBag()
+    console.log('Bag removed')
+  }
+
+  exampleList = async (view) => {
+    // List the files in the bag
+    let list = await view.list()
+
+    // Print results
+    if (list.length == 0) {
+      console.log('No files in the bag.')
+      return
+    }
+    console.log('Files in this bag:')
+    list.forEach(element => console.log(`${element.FileQid}:\t${element.Name}`));
+  }
+
+  // Run the example
+  exampleFiles()
+</script>

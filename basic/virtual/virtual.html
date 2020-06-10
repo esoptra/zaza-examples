@@ -1,0 +1,34 @@
+<script src="https://zaza.rocks/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="https://zaza.rocks/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<label for="name">Name</label><input type="text" id="name">
+<label for="link">Link</label><input type="text" id="link">
+
+<button onclick="doUpload()">Create link</button>
+
+<script>
+  var nameIn = document.getElementById("name");
+  var linkIn = document.getElementById("link");
+
+  // Example of uploading a virtual file to a bag 
+  exampleVirtual = async () => {
+    // Get the current view ID
+    let qid = await Bridge.View.getId()
+
+    // Create the view object
+    var view = new Zaza.View(qid)
+
+    doUpload = async () => {
+      // Create the virtual file definition
+      let virtual = new Zaza.Link(linkIn.value)
+
+      // Upload it to the bag
+      await view.uploadVirtual(virtual, nameIn.value)
+
+      alert("Virtual file uploaded!")
+    }
+  }
+
+  // Run the example
+  exampleVirtual()
+</script>

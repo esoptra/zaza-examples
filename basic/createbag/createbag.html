@@ -1,0 +1,41 @@
+<script src="https://zaza.rocks/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of creating a bag
+    exampleCreateBag = async () => {
+        // Create a bag
+        let owner = await Zaza.createBag()
+        console.log(`Created bag ${owner.qid}`)
+
+        // Print the owner rights
+        let ownerData = await owner.data()
+        console.log(`Bag rights: ${ownerData.data.rights}`)
+
+        // Create a download view
+        let view = await owner.getUserView(["list", "read"])
+        console.log(`Created view ${view.qid}`)
+
+        // Print the download rights
+        let viewData = await view.data()
+        console.log(`View rights: ${viewData.data.rights}`)
+
+        // Delete the bag
+        await owner.deleteBag()
+        console.log('Bag removed')
+    }
+
+    // Run the example
+    exampleCreateBag()
+</script>

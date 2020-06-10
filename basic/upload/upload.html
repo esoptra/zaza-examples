@@ -1,0 +1,30 @@
+<script src="https://zaza.rocks/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="https://zaza.rocks/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<input type="file" id="input" multiple>
+<button onclick="doUpload()">Click me</button>
+
+
+<script>
+    var input = document.getElementById("input");
+
+    // Example of uploading a file to a bag 
+    exampleUpload = async () => {
+        // Get the current view ID
+        let qid = await Bridge.View.getId()
+
+        // Create the view object
+        var view = new Zaza.View(qid)
+
+        doUpload = async () => {
+            for (const file of input.files) {
+                // Upload data
+                await view.upload(file)
+            }
+            alert("File(s) uploaded!")
+        }
+    }
+
+    // Run the example
+    exampleUpload()
+</script>

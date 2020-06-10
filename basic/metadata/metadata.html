@@ -1,0 +1,41 @@
+<script src="https://zaza.rocks/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="https://zaza.rocks/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+  // Log to a div
+  let console = {};
+  let logger = document.getElementById("logger");
+  console.log = text => {
+    let element = document.createElement("div");
+    let txt = document.createTextNode(text);
+
+    element.appendChild(txt);
+    logger.appendChild(element);
+  }
+
+  // Example of getting and setting bag metadata
+  const exampleMetadata = async () => {
+    // Get the current view ID
+    let viewId = await Bridge.View.getId()
+
+    // Get access to the view
+    let view = new Zaza.View(viewId)
+
+    // Get the bag metadata
+    let data = await view.getMetadata()
+    console.log(`Bag name: ${data.name}`)
+
+    // Come up with a new name
+    let nr = Math.round(Math.random() * 10)
+    data.name = `bag-${nr}`
+
+    // Update the metadata
+    // NOTE: Only an owner view or project API Key can set metadata for now.
+    await view.setMetadata(data)
+    console.log(`Bag name changed to: ${data.name}`)
+  }
+
+  exampleMetadata()
+</script>

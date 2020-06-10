@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <script src="https://zaza.rocks/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+    <script src="https://zaza.rocks/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <div v-if="isLoading">
+            Loading...
+        </div>
+
+        <div v-if="!isLoading">
+            {{ content.message }}
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
