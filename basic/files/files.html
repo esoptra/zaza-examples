@@ -33,13 +33,14 @@
     await exampleList(view)
 
     // Download the file
-    // let stream = await view.download("data.json")
-    // let data = new Response(stream).body
-    // console.log(`Data: ${data}`);
+    let stream = await view.download("data.json")
+    let data = await new Response(stream).text()
+    console.log(`File downloaded`);
+    console.log(`Data: ${data}`);
 
     // Download JSON file as object
     let object = await view.downloadJSON("data.json")
-    console.log(`File downloaded`);
+    console.log(`JSON file downloaded`);
     console.log(`foo = ${object.foo}`);
 
     // Delete the file
