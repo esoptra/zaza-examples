@@ -1,0 +1,48 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+  // Log to a div
+  let console = {};
+  let logger = document.getElementById("logger");
+  console.log = text => {
+    let element = document.createElement("div");
+    let txt = document.createTextNode(text);
+
+    element.appendChild(txt);
+    logger.appendChild(element);
+  }
+
+  // Example of getting and setting bag metadata with project object
+  const exampleProject = async () => {
+    //Create project object with prohect API key
+    let project = new Zaza.Project('<Project API key>')
+    
+    //Create bag in project 
+    let owner = await project.createBag()
+    console.log(`Created bag owner id : ${owner.qid}`)
+
+    //Get metadata of all bags in project 
+    console.log('Metadata for project')
+    var data = await project.getMetadata()
+    data.forEach(element => {
+        console.log(`Bag storage id : ${element.$dataScope} Name : ${element.name}`)
+    });
+
+    //Set metadata for bag in project
+    let nr = Math.round(Math.random() * 10)
+    console.log(`Updating metadata for bag storage id : ${data[0].$dataScope}`)
+    data[0].name = "Name_"+nr
+    var res = await project.setMetadata(data[0])
+
+    console.log('Updated metadata for project')
+    var data = await project.getMetadata()
+    data.forEach(element => {
+        console.log(`Bag storage id : ${element.$dataScope} Name : ${element.name}`)
+    });
+  }
+
+  exampleProject()
+</script>
