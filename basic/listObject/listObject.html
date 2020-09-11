@@ -1,0 +1,86 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+  // Log to a div
+  let console = {};
+  let logger = document.getElementById("logger");
+  console.log = text => {
+    let element = document.createElement("div");
+    let txt = document.createTextNode(text);
+
+    element.appendChild(txt);
+    logger.appendChild(element);
+  }
+
+  // Example of setting and getting data for list type object 
+  const exampleListObject = async () => {
+    //Create project object with prohect API key
+    let project = new Zaza.Project('<Project API Key>')
+
+    //Create object for project
+    console.log(`Creating object for project`)
+    let obj = await project.newObject("List Object",true,false).catch(err => console.log("Error ",err))
+
+    //Create attribute for project
+    console.log("Creatng attribute for project")
+    property = await obj.newAttribute("Prop 1")
+    console.log(`Property : ${JSON.stringify(property)}`)
+
+    // Create bag in project 
+    let owner = await project.createBag()
+    console.log(`Created bag owner id : ${owner.qid}`)
+
+    //Get list object for view
+    let object = await owner.object("List Object")
+
+    //Insert data with structuredObject object
+    console.log("Inserting data to created view")
+    await object.insert({
+        id: "1",
+        prop1: "test 1"
+    })
+
+    console.log("Inserting data to created view")
+    await object.insert({
+        id: "2",
+        prop1: "test 2"
+    })
+
+    //Get bag data for specific id with listObject object
+    let singleInstanceData = await object.get("1")
+    console.log(`Single instance data : ${JSON.stringify(singleInstanceData)}`)
+
+    //Update data with listObject object
+    console.log("updating data with listObject object")
+    singleInstanceData.prop1 = "test updated"
+
+    await object.update(singleInstanceData)
+
+    let updatedData = await object.get("1")
+    console.log(`Updated data ${JSON.stringify(updatedData)}`) 
+
+    console.log("Data before deleting instance")
+    data = await owner.getData("List Object")
+    console.log(`Data : ${JSON.stringify(data)}`)
+
+    //delete record for view using listObject object
+    console.log("deleting instance")
+    await object.delete("1")
+
+    console.log("Data after deleting instance")
+    data = await owner.getData("List Object")
+    console.log(`Data : ${JSON.stringify(data)}`)
+
+    console.log("Deleting created bag")
+    await owner.deleteBag()
+
+    // Delete object for project
+    console.log(`Deleting object for project`)
+    await project.deleteObject("List Object")
+  }
+
+  exampleListObject()
+</script>
