@@ -1,0 +1,66 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+  // Log to a div
+  let console = {};
+  let logger = document.getElementById("logger");
+  console.log = text => {
+    let element = document.createElement("div");
+    let txt = document.createTextNode(text);
+
+    element.appendChild(txt);
+    logger.appendChild(element);
+  }
+
+  // Example of creating, getting and deleting property with structuredObject object 
+  const exampleAttribute = async () => {
+    //Create project object with prohect API key
+    let project = new Zaza.Project('<Project API Key>')
+
+    //Create object for project
+    console.log(`Creating object for project`)
+    await project.newObject("test",false,false).catch(err => console.log("Error ",err))
+
+    // Get object for project
+    console.log(`Getting object for project`)
+    let obj = await project.getObject("test")
+    console.log(`Object name : ${obj.name} Object qid: ${obj.$qid}`)
+
+    //Get attributes of object
+    console.log("Getting attributes for project")
+    let properties = await obj.getAttributes()
+    console.log(`Properties : ${JSON.stringify(properties)}`)
+
+    //Get specific attribute of object
+    console.log("Getting specific attribute for project")
+    let property = await obj.getAttribute("id")
+    console.log(`Property : ${JSON.stringify(property)}`)
+
+
+    //Create attribute for project
+    console.log("Creatng attribute for project")
+    property = await obj.newAttribute("Prop 1")
+    console.log(`Property : ${JSON.stringify(property)}`)
+
+    //Get specific attribute of object
+    console.log("Getting specific attribute for project")
+    property = await obj.getAttribute("Prop 1")
+    console.log(`Property : ${JSON.stringify(property)}`)
+
+
+    // Delete object for project
+    console.log(`Deleting object for project`)
+    await project.deleteObject("test")
+
+    // Get object for project
+    console.log(`Getting object for project`)
+    obj = await project.getObject("test").catch(err => console.log("Failed to get object:",err))
+    console.log(`Object name : ${obj}`)
+
+  }
+
+  exampleAttribute()
+</script>

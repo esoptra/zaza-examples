@@ -1,0 +1,52 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+  // Log to a div
+  let console = {};
+  let logger = document.getElementById("logger");
+  console.log = text => {
+    let element = document.createElement("div");
+    let txt = document.createTextNode(text);
+
+    element.appendChild(txt);
+    logger.appendChild(element);
+  }
+
+  // Example of creating, getting and deleting property with structuredObject object 
+  const exampleCustomObjectData = async () => {
+    //Create project object with prohect API key
+    let project = new Zaza.Project('<Project API key>')
+
+    //Create object for project
+    console.log(`Creating object for project`)
+    let obj = await project.newObject("test",false,false).catch(err => console.log("Error ",err))
+
+    //Create attribute for project
+    console.log("Creatng attribute for project")
+    property = await obj.newAttribute("Prop 1")
+    console.log(`Property : ${JSON.stringify(property)}`)
+
+    // Create bag in project 
+    let owner = await project.createBag()
+    console.log(`Created bag owner id : ${owner.qid}`)
+
+    console.log("Setting data for custom object")
+    await owner.setData("test",{
+      id:"1",
+      prop1:"test"
+    })
+  
+    // Get the bag metadata
+    let data = await owner.getData("test")
+    console.log(`Bag data: ${JSON.stringify(data)}`)
+  
+    // Delete object for project
+    console.log(`Deleting object for project`)
+    await project.deleteObject("test")
+  }
+
+  exampleCustomObjectData()
+</script>
