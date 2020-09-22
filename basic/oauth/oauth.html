@@ -20,9 +20,9 @@
     login = async () => {
         console.log("Login")
         await Bridge.Auth.Authenticate({
-            template: "Okta",
-            issuer: "<issuer url>",
-            clientId: "<Client id>",
+            template: Bridge.AuthConfigTemplate.Okta,
+            issuer: "<Issuer URL>",
+            clientId: "<Client Id>",
         })
     }
 
