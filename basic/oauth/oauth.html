@@ -1,0 +1,61 @@
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+<button onclick="login()" id="login" style="display: none;">Login</button>
+<button onclick="logout()" id="logout" style="display: none;">Logout</button>
+
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    //Login method using Bridge
+    login = async () => {
+        console.log("Login")
+        await Bridge.Auth.authenticate({
+            template: Bridge.AuthConfigTemplate.Okta,
+            issuer: "<Issuer URL>",
+            clientId: "<Client Id>",
+        })
+    }
+
+    //Logout method using Bridge
+    logout = async () => {
+        console.log("Logging out")
+        await Bridge.Auth.logout()
+    }
+
+    // Example of authenticating user with oauth
+    exampleAuthenticate = async () => {
+        var isLoggedIn = await Bridge.Auth.isLoggedIn()
+        console.log("Is LoggedIn : " + isLoggedIn)
+
+        if (isLoggedIn) {
+            document.getElementById("logout").style.display = "block"
+            document.getElementById("login").style.display = "none"
+
+            //Get access token 
+            console.log("Getting Access token")
+            var accessToken = await Bridge.Auth.accessToken()
+            console.log("Access Token : " + accessToken)
+
+            //Get id token 
+            console.log("Getting Id token")
+            var idToken = await Bridge.Auth.idToken()
+            console.log("Id Token : " + idToken)
+        } else {
+            document.getElementById("login").style.display = "block"
+            document.getElementById("logout").style.display = "none"
+        }
+    }
+
+    // Run the example
+    exampleAuthenticate()
+</script>
