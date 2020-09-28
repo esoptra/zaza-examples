@@ -50,6 +50,11 @@
             console.log("Getting Id token")
             var idToken = await Bridge.Auth.idToken()
             console.log("Id Token : " + idToken)
+
+            //Get user info
+            console.log("Getting user info")
+            var userInfo = await Bridge.Auth.userInfo()
+            console.log("User info : " + JSON.stringify(userInfo))
         } else {
             document.getElementById("login").style.display = "block"
             document.getElementById("logout").style.display = "none"
