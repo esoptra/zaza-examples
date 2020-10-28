@@ -1,0 +1,85 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+    // Log to a div
+    let console = {};
+    let logger = document.getElementById("logger");
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of creating, deleting and getting object with project object 
+    const exampleObject = async () => {
+        //Create project object with project API key
+        let project = new Zaza.Project('<Project Key>')
+
+        // Create object for project
+        console.log(`Creating Global List object for project`)
+        let object = await project.newObject("GlobalListObject", true, true)
+            .catch((err) => {
+                console.log("Error while creating object", err);
+                return;
+            })
+
+        //Create attribute for project
+        console.log("Creatng attribute for project")
+        property = await object.newAttribute("Prop 1")
+        console.log(`Property : ${JSON.stringify(property)}`)
+
+        //Get object by name
+        console.log(`Get object of a project`)
+        var obj = project.object("GlobalListObject")
+
+        //Insert data
+        console.log("Inserting data to created object")
+        await obj.insert({
+            id: "1",
+            prop1: "test 1"
+        })
+
+        console.log("Inserting data to created object")
+        await obj.insert({
+            id: "2",
+            prop1: "test 2"
+        })
+
+        //Get data
+        console.log(`Get all data of object`)
+        var data = await obj.get()
+        console.log(`Data : ${JSON.stringify(data)}`)
+
+        console.log(`Get single instance of object`)
+        data = await obj.get("1")
+        console.log(`Data : ${JSON.stringify(data)}`)
+
+        //Update data
+        console.log(`Update single instance of object`)
+
+        data.prop1 = "updated prop1"
+        data = await obj.update(data)
+
+        data = await obj.get("1")
+        console.log(`Data after update: ${JSON.stringify(data)}`)
+
+        //Delete data
+        data = await obj.delete("1")
+
+        //Get data
+        console.log(`Data after deleting instance of object`)
+        var data = await obj.get()
+        console.log(`Data : ${JSON.stringify(data)}`)
+
+        data = await obj.get("1")
+        console.log(`Updated Data : ${JSON.stringify(data)}`)
+
+    }
+
+    exampleObject()
+</script>
