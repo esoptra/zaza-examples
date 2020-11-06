@@ -1,0 +1,28 @@
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+<button onclick="startScanning()" id="scan" style="display: block;">Start Scanning</button>
+
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = resp => {
+        let element = document.createElement("div");
+        let text = document.createTextNode("Text: " +resp.Text);
+        element.appendChild(text);
+        element.appendChild(document.createElement("br"))
+        let format = document.createTextNode("Type: " + resp.Format);
+        element.appendChild(format);
+        logger.appendChild(element);
+    }
+
+    // Example of Single scanning Mode
+    startScanning = async () => {
+        //Open the camera and start scanning. 
+        //The scanner window closes after successful scan.
+        let scanResult = await Bridge.Scanner.Scan();
+        console.log(scanResult)
+    }
+</script>

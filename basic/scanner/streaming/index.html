@@ -1,0 +1,35 @@
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+<button onclick="startScanning()" id="scan" style="display: block;">Scan 3 codes</button>
+
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = resp => {
+        let element = document.createElement("div");
+        let text = document.createTextNode("Text: " +resp.Text);
+        element.appendChild(text);
+        element.appendChild(document.createElement("br"))
+        let format = document.createTextNode("Type: " + resp.Format);
+        element.appendChild(format);
+        logger.appendChild(element);
+    }
+
+    // Example of Streaming scanning Mode
+    startScanning = async () => {
+        //Open scanner window and start scanning 
+        await Bridge.Scanner.Open();
+        //Listen to Next() to get scanned results.
+        //In this example, we are scanning 3 symbols
+        let resp = {};
+        for(let i=0;i<3;i++){
+            resp = await Bridge.Scanner.Next()
+            console.log(resp)
+        }
+        //Close the scanner
+        await Bridge.Scanner.Close()
+    }
+</script>
