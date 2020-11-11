@@ -15,28 +15,56 @@
     logger.appendChild(element);
   }
 
-  // Example of creating, deleting and getting object with project object 
+  // Example of creating, deleting, editing and getting object with project object 
   const exampleObject = async () => {
     //Create project object with project API key
 
     let project = new Zaza.Project('<Project API Key>')
 
-    //Create object for project
-    console.log(`Creating object for project`)
-    await project.newObject("test",false,false).catch(err => console.log("Error ",err))
+    //Create object with key property for project
+    console.log(`Creating object for project with key property`)
+    await project.newObject("Test 1", false, false, "Id").catch(err => console.log("Error ", err))
 
     // Get object for project
     console.log(`Getting object for project`)
-    let obj = await project.getObject("test")
+    let obj = await project.getObject("Test 1")
     console.log(`Object name : ${obj.name} Object qid: ${obj.$qid}`)
+
+    //Create object without key property for project
+    console.log(`Creating object for project without key property`)
+    var object = await project.newObject("Test 2", false, false).catch(err => console.log("Error ", err))
+
+    // Get object for project
+    console.log(`Getting object for project`)
+    obj = await project.getObject("Test 2")
+    console.log(`Object name : ${obj.name} Object qid: ${obj.$qid}`)
+
+    //Update key property for object
+    console.log(`Updating key property for project`)
+    var updatedObject = await object.updateKeyAttribute("Prop 1").catch(err => console.log("Error ", err))
+    console.log(`Updated object ${JSON.stringify(updatedObject)}`)
+
+    //Rename object
+    console.log(`Rename object`)
+    updatedObject = await object.rename("Test 3").catch(err => console.log("Error ", err))
+    console.log(`Renamed object ${JSON.stringify(updatedObject)}`)
 
     // Delete object for project
     console.log(`Deleting object for project`)
-    await project.deleteObject("test")
+    await project.deleteObject("Test 1")
+
+    // Delete object for project
+    console.log(`Deleting object for project`)
+    await project.deleteObject("Test 3")
 
     // Get object for project
     console.log(`Getting object for project`)
-    obj = await project.getObject("test").catch(err => console.log("Failed to get object:",err))
+    obj = await project.getObject("Test 1").catch(err => console.log("Failed to get object:", err))
+    console.log(`Object name : ${obj}`)
+
+    // Get object for project
+    console.log(`Getting object for project`)
+    obj = await project.getObject("Test 3").catch(err => console.log("Failed to get object:", err))
     console.log(`Object name : ${obj}`)
 
   }
