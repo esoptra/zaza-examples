@@ -1,0 +1,64 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+
+
+Show Dialog: <input type="checkbox" id="showDialog" checked> <br/>
+Allow Cancel: <input type="checkbox" id="allowCancel" checked><br/>
+Hide After Upload: <input type="checkbox" id="hideAfterUpload" checked> <br/>
+
+<br/>
+<input type="file" id="input" multiple>
+<button onclick="doUpload()">Click me</button>
+
+<br/>
+<div id="logger"></div>
+
+<script>
+
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    var input = document.getElementById("input");
+
+    // Example of uploading a file to a bag 
+    exampleUpload = async () => {
+        // Get the current view ID
+        let qid = await Bridge.View.getId()
+
+        // Create the view object
+        var view = new Zaza.View(qid)
+
+        doUpload = async () => {
+           
+            // Get the showDialog check
+            // Determines whether users can see the file upload progress UI on the DOM
+            showDialogChecked = document.getElementById("showDialog").checked
+            
+            // Get the allowCancel check
+            // Determines whether users are allowed to cancel the file items while they are being uploaded
+            allowCancelChecked = document.getElementById("allowCancel").checked
+
+            // Get the hideAfterUpload check
+            // Determines whether to keep the Upload Files UI to be there even after all the files are uploaded
+            hideAfterUploadChecked = document.getElementById("hideAfterUpload").checked
+
+            //Upload() supports single file or file array
+            let files = await Bridge.View.upload(input.files, {showDialog: showDialogChecked, allowCancel: allowCancelChecked, hideAfterUpload: hideAfterUploadChecked})
+
+            // result files will have a deciding parameter 'isUploaded' (bool) whether the file is uploaded or not.
+            //Log the result onto DOM
+            console.log(JSON.stringify(files))
+        }
+    }
+
+    // Run the example
+    exampleUpload()
+</script>
