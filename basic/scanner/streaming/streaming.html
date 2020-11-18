@@ -10,12 +10,18 @@
     let console = {};
     console.log = resp => {
         let element = document.createElement("div");
-        let text = document.createTextNode("Text: " +resp.Text);
-        element.appendChild(text);
-        element.appendChild(document.createElement("br"))
-        let format = document.createTextNode("Type: " + resp.Format);
-        element.appendChild(format);
-        logger.appendChild(element);
+        if(resp == undefined){
+            let text = document.createTextNode("Scanner closed by user");
+            element.appendChild(text);
+            logger.appendChild(element);
+        }else{
+            let text = document.createTextNode("Text: " +resp.Text);
+        	element.appendChild(text);
+        	element.appendChild(document.createElement("br"))
+        	let format = document.createTextNode("Type: " + resp.Format);
+        	element.appendChild(format);
+        	logger.appendChild(element);
+        }
     }
 
     // Example of Streaming scanning Mode
