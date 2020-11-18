@@ -1,0 +1,36 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+
+<button onclick="notify()">Send Email Notification</div>
+
+<div id="logger"></div>
+
+<script>
+
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+
+    // Example to send the email notification with custom message for the registered users of bag
+    notify = async () => {
+
+        //Get the zaza view ID using bridge SDK
+        const viewId = await Bridge.View.getId()
+        
+        // Create the view object
+        const viewObj = new Zaza.View(viewId)
+        
+        //Send an email to the registered users (emails) for this view.
+        await viewObj.notify('Message to appear in the email body')
+        
+        console.log('Email sent successfully')
+
+    }
+
+</script>
