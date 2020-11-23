@@ -1,4 +1,5 @@
 <script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
 
 <button onclick="notify()">Send Email Notification</div>
 
@@ -20,15 +21,22 @@
     // Example to send the email notification with custom message for the registered users of bag
     notify = async () => {
 
-        //Get the zaza view ID using bridge SDK
-        const viewId = await Bridge.View.getId()
-        
-        // Create the view object
-        const viewObj = new Zaza.View(viewId)
+        //Create project object with project API key
+        let project = new Zaza.Project('<Project API Key>')
+    
+        // Create bag in project 
+        let owner = await project.createBag()
+        console.log(`Created bag owner id : ${owner.qid}`)
+
+        // Save the bag 
+        const isBagSaved = await Bridge.View.saveBag('Bag Name')
+        console.log(`bag saved: ${isBagSaved}`)
+
+        // get view object from project
+        let view = project.getView(owner.qid)
         
         //Send an email to the registered users (emails) for this view.
         await viewObj.notify('Message to appear in the email body')
-        
         console.log('Email sent successfully')
 
     }
