@@ -1,0 +1,33 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of sharing a bag
+    exampleShareBag = async () => {
+        // Create a bag
+        let owner = await Zaza.createBag()
+        console.log(`Created bag ${owner.qid}`)
+
+        // To display Share bag UI
+        await Bridge.View.shareBag()
+
+        // Delete the bag
+        await owner.deleteBag()
+        console.log('Bag removed')
+    }
+
+    // Run the example
+    exampleShareBag()
+</script>
