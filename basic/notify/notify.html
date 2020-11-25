@@ -1,7 +1,7 @@
 <script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
 <script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
 
-<button onclick="notify()">Send Email Notification</div>
+<button onclick="notify()">Send Email Notification</button>
 
 <div id="logger"></div>
 
@@ -32,8 +32,12 @@
         const isBagSaved = await Bridge.View.saveBag('Bag Name')
         console.log(`bag saved: ${isBagSaved}`)
 
+        // Get the current view ID
+        let qid = await Bridge.View.getId()
+        console.log(`download qid: ${qid}`)
+
         // get view object from project
-        let view = project.getView(owner.qid)
+        let viewObj = project.getView(qid)
         
         //Send an email to the registered users (emails) for this view.
         await viewObj.notify('Message to appear in the email body')
