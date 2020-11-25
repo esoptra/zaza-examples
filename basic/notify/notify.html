@@ -24,10 +24,6 @@
         //Create project object with project API key
         let project = new Zaza.Project('<Project API Key>')
     
-        // Create bag in project 
-        let owner = await project.createBag()
-        console.log(`Created bag owner id : ${owner.qid}`)
-
         //Save the bag
         const isBagSaved = await Bridge.View.saveBag('Bag Name')
         console.log(`bag saved: ${isBagSaved}`)
