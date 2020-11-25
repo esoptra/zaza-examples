@@ -16,16 +16,9 @@
 
     // Example of sharing a bag
     exampleShareBag = async () => {
-        // Create a bag
-        let owner = await Zaza.createBag()
-        console.log(`Created bag ${owner.qid}`)
-
+    
         // To display Share bag UI
         await Bridge.View.shareBag()
-
-        // Delete the bag
-        await owner.deleteBag()
-        console.log('Bag removed')
     }
 
     // Run the example

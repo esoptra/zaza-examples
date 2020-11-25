@@ -16,18 +16,11 @@
 
     // Example of saving a bag
     exampleSaveBag = async () => {
-        // Create a bag
-        let owner = await Zaza.createBag()
-        console.log(`Created bag ${owner.qid}`)
-
+        
         // Save the bag
         const isBagSaved = await Bridge.View.saveBag({bagName:'Bag Name', displayText:'Text to display in the Save Bag dialog UI'})
         console.log(`bag saved: ${isBagSaved}`)
         // can be await Bridge.View.saveBag('<bag name>')
-
-        // Delete the bag
-        await owner.deleteBag()
-        console.log('Bag removed')
     }
 
     // Run the example
