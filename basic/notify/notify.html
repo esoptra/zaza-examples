@@ -33,7 +33,7 @@
         console.log(`bag saved: ${isBagSaved}`)
 
         // get view object from project
-        let view = project.getView(owner.qid)
+        let viewObj = project.getView(owner.qid)
         
         //Send an email to the registered users (emails) for this view.
         await viewObj.notify('Message to appear in the email body')
