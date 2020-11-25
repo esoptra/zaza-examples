@@ -28,9 +28,7 @@
         let owner = await project.createBag()
         console.log(`Created bag owner id : ${owner.qid}`)
 
-        // Save the bag 
-        const isBagSaved = await Bridge.View.saveBag('Bag Name')
-        console.log(`bag saved: ${isBagSaved}`)
+        // Save the bag for the owner view.
 
         // Get the current view ID
         let qid = await Bridge.View.getId()
