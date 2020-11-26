@@ -1,0 +1,28 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of saving a bag
+    exampleSaveBag = async () => {
+        
+        // Save the bag
+        const isBagSaved = await Bridge.View.saveBag({bagName:'Bag Name', displayText:'Text to display in the Save Bag dialog UI'})
+        console.log(`bag saved: ${isBagSaved}`)
+        // can be await Bridge.View.saveBag('<bag name>')
+    }
+
+    // Run the example
+    exampleSaveBag()
+</script>
