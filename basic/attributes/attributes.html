@@ -1,0 +1,29 @@
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+<input type="text" id="atrValue" name="atrValue"><br><br>
+
+<button onclick="getAttributeValue()" id="scan" style="display: block;">Get Value</button>
+
+<script>
+    // Helper to log to the screen
+    let logger = document.getElementById("logger");
+    let console = {};
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of getting attribute
+    getAttributeValue = async () => {
+        let attr = document.getElementById("atrValue").value;
+        if(attr.length<=0){
+            return
+        }
+        // Get Attribute
+        const value = await Bridge.View.getAttribute(attr)
+        console.log(`Attribute Value: ${value}`)
+    }
+</script>
