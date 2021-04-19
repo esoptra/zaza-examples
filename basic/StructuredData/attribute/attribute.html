@@ -39,7 +39,6 @@
     let property = await obj.getAttribute("id")
     console.log(`Property : ${JSON.stringify(property)}`)
 
-
     //Create attribute for project
     console.log("Creatng attribute for project")
     property = await obj.newAttribute("Prop 1")
@@ -50,6 +49,15 @@
     property = await obj.getAttribute("Prop 1")
     console.log(`Property : ${JSON.stringify(property)}`)
 
+    //Create attribute in a specific position
+    console.log("Creatng attribute for project in a specific position")
+    property = await obj.newAttribute("Prop 2",undefined,"id")
+    console.log(`Property : ${JSON.stringify,(property)}`)
+
+    //Get attributes of object
+    console.log("Getting attributes for project")
+    properties = await obj.getAttributes()
+    console.log(`Properties : ${JSON.stringify(properties)}`)
 
     // Delete object for project
     console.log(`Deleting object for project`)
