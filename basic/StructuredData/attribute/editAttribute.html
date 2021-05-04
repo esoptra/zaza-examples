@@ -17,11 +17,8 @@
 
     // Example of creating, getting and deleting property with structuredObject object 
     const exampleEditAttribute = async () => {
-        Zaza.setHost("https://sharehost.local.host")
-        Zaza.setAdminHost("https://admin.local.host")
-
         //Create project object with prohect API key
-        let project = new Zaza.Project('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJWaWV3SWQiOiIiLCJSaWdodHMiOjAsIkJsZXNzZWQiOmZhbHNlLCJCYWdTdG9yYWdlUWlkIjoiIiwiUHJvamVjdElkIjoiMGZiNWZlMmNhZWNmNGU5YmY4MTI0YjI1MWY3N2E2M2EiLCJTY29wZSI6InByb2plY3QgdmlldyIsImlhdCI6MTYxODgwOTE5Nn0.P-af_JG7V_YCWUgEmv8fRuZ859Yoft_JWRz0S5u6ngs')
+        let project = new Zaza.Project('<Project API Key>')
 
         //Create object for project
         console.log(`Creating object for project`)
