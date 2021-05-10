@@ -2,7 +2,7 @@
 
 <div id="logger"></div>
 <button onclick="login()" id="login" style="display: none;">Login</button>
-<button onclick="logout()" id="logout" style="display: none;">Logout</button>
+<button onclick="logout()" id="logout" style="display: none;">LogoutButton</button>
 
 
 <script>
@@ -20,9 +20,10 @@
     login = async () => {
         console.log("Login")
         await Bridge.Auth.authenticate({
-            template: Bridge.AuthConfigTemplate.Okta,
+            template: Bridge.AuthConfigTemplate.Azure,
             issuer: "<Issuer URL>",
             clientId: "<Client Id>",
+          	
         })
     }
 
