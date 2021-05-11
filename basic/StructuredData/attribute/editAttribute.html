@@ -1,0 +1,78 @@
+<script src="/sdk/v1/zaza-sdk/zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+    // Log to a div
+    let console = {};
+    let logger = document.getElementById("logger");
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of creating, getting and deleting property with structuredObject object 
+    const exampleEditAttribute = async () => {
+        //Create project object with prohect API key
+        let project = new Zaza.Project('<Project API Key>')
+
+        //Create object for project
+        console.log(`Creating object for project`)
+        await project.newObject("test", false, false).catch(err => console.log("Error ", err))
+
+        // Get object for project
+        console.log(`Getting object for project`)
+        let obj = await project.getObject("test")
+        console.log(`Object name : ${obj.name} Object qid: ${obj.$qid}`)
+
+        //Create attribute for project
+        console.log("Creatng attribute for project")
+        let property1 = await obj.newAttribute("Prop 1")
+        console.log(`Property : ${JSON.stringify(property1)}`)
+
+        console.log("Creatng attribute of datetime type and place it before propert 1")
+        let property2 = await obj.newAttribute("Prop 2", "datetime", "prop1")
+        console.log(`Property : ${JSON.stringify(property2)}`)
+
+        console.log("Creatng attribute")
+        let property3 = await obj.newAttribute("Prop 3", "number")
+        console.log(`Property : ${JSON.stringify(property3)}`)
+
+        //Get attributes of object
+        console.log("Getting attributes for project")
+        properties = await obj.getAttributes()
+        console.log(`Properties : ${JSON.stringify(properties)}`)
+
+        //Get specific attributes of object
+        console.log("Getting property 3 attribute")
+        let property = await obj.getAttribute("Prop 3")
+        console.log(`Property : ${JSON.stringify(property)}`)
+
+        //Update attribute
+        property.apiName = "newProp3"
+        property.nextProperty = "prop2"
+        property = await obj.updateAttribute(property)
+        console.log(`Updated property : ${JSON.stringify(property)}`)
+
+        //Get attributes of object
+        console.log("Getting attributes for project")
+        properties = await obj.getAttributes()
+        console.log(`Properties : ${JSON.stringify(properties)}`)
+
+        // Delete object for project
+        console.log(`Deleting object for project`)
+        await project.deleteObject("test")
+
+        // Get object for project
+        console.log(`Getting object for project`)
+        obj = await project.getObject("test").catch(err => console.log("Failed to get object:",err))
+        console.log(`Object name : ${obj}`)
+
+    }
+
+    exampleEditAttribute()
+</script>
