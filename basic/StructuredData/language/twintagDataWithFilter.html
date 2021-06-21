@@ -1,0 +1,87 @@
+<script src="zaza.js" charset="utf-8"></script>
+<script src="/sdk/v1/bridge/bridge.js" charset="utf-8"></script>
+
+<div id="logger"></div>
+
+<script>
+    // Log to a div
+    let console = {};
+    let logger = document.getElementById("logger");
+    console.log = text => {
+        let element = document.createElement("div");
+        let txt = document.createTextNode(text);
+
+        element.appendChild(txt);
+        logger.appendChild(element);
+    }
+
+    // Example of getting and setting twintag data with project object
+    const exampleProject = async () => {
+        //Create project object with prohect API key
+        Zaza.setHost("https://sharehost.local.host")
+        Zaza.setAdminHost("https://admin.local.host")
+        let project = new Zaza.Project('eyJhbGciOiJIUzI1NiIsImtpZCI6IjZiYTNlMmFhMTM0MWY3OTkwOTM5N2ExODY1MWRiMTM1IiwidHlwIjoiSldUIn0.eyJWaWV3SWQiOiIiLCJSaWdodHMiOjAsIkJsZXNzZWQiOmZhbHNlLCJCYWdTdG9yYWdlUWlkIjoiIiwiUHJvamVjdElkIjoiZjZlMDQwMmU3MGMwNTlmOTVkYzU3NWExY2I3OGJiYjQiLCJTY29wZSI6InByb2plY3QgdmlldyIsImlhdCI6MTYyMjgwODQ1M30.MnPrbr6jSNVNrDXbDTImJJ86MhSAB4F_sWbYt-ChU3k')
+        debugger;
+        const langs = ['en', 'nl', 'fr']
+        let res = await project.setAllLanguages(langs, 'en').catch(err => {
+            console.log("error setting project languages")
+        })
+
+        let obj = await project.newObject("List Object Filter", true, false).catch(err => console.log("Error ", err))
+
+        //Create attribute for project
+        console.log("Creatng attribute for project")
+        
+        property = await obj.newAttribute("Prop 1", 'string', null)
+        console.log(`Property : ${JSON.stringify(property)}`)
+
+        prop2 = await obj.newAttribute("Prop 2", 'number', null)
+        console.log(`Property : ${JSON.stringify(property)}`)
+
+        //create translation attr
+        let langAttr = {
+            'fr': 'prop1 fr',
+            'nl': 'prop1 nl'
+        }
+        trans = await obj.addTranslationAttribute(langAttr, property.apiName)
+        console.log(`trans : ${JSON.stringify(trans)}`)
+
+        // Create bag in project 
+        let owner = await project.createBag()
+        console.log(`Created bag owner id : ${owner.qid}`)
+
+        //Get object for view
+        let object = await owner.object("List Object Filter")
+
+        //Insert data with structuredObject object
+        console.log("Inserting data to created view")
+        await object.insert({
+            id: "1",
+            prop1: "test 1 default english",
+            prop1$fr: 'test1 in french',
+            prop1$nl: 'test1 in NL',
+            prop2: 100
+        })
+
+        await object.insert({
+            id: "2",
+            prop1: "test 2 default english",
+            prop1$fr: 'test2 in french',
+            prop1$nl: 'test2 in NL',
+            prop2: 99
+        })
+
+        //get default language value
+        defLang = await object.match({'prop2':99});
+        console.log(`default lang value : ${JSON.stringify(defLang)}`)
+        //get all languages value
+        allLangs = await object.match({'prop2':99},'all');
+        console.log(`all lang value : ${JSON.stringify(allLangs)}`)
+
+        //get specific language
+        frLang = await object.match({'prop2':99},'fr');
+        console.log(`french lang value : ${JSON.stringify(frLang)}`)
+    }
+
+    exampleProject()
+</script>
