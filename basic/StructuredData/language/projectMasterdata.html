@@ -20,7 +20,7 @@
         //Create project object with prohect API key
         let project = new Zaza.Project('<apikey>')
         const langs = ['en', 'nl', 'fr']
-        let res = await project.setAllLanguages(langs, 'en').catch(err => {
+        let res = await project.setAllowedLanguages(langs, 'en').catch(err => {
             console.log("error setting project languages")
         })
 
